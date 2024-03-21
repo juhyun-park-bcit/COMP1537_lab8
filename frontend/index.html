@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="http://localhost:3000/getWeatherForACityByName" method="get">
+      <input type="text" value="Vancouver" name="cname" id="city_name_input" />
+      <input type="submit" />
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+      myForm = document.querySelector("form");
+      myForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        // ajax
+        fetch(
+          `http://localhost:3000/getWeatherForACityByName?cname=${city_name_input.value}`
+        )
+          .then((resp) => resp.json())
+          .then((data) => {
+            console.log(data);
+            result.innerHTML += ` <h1> ${data.name} </h1> `;
+            result.innerHTML += `<div> ${data.main.temp} </div>`;
+            result.innerHTML += `<div> ${data.weather[0].description} </div>`;
+            result.innerHTML += `<div> <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" </div>`;
+          })
+          .catch((err) => console.log(err));
+      });
+    </script>
+  </body>
+</html>
